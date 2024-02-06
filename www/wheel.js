@@ -198,6 +198,7 @@ const selectPrize = () => {
   winner.style.color = data[selected].color;
   selectedData = data[selected];
   endSound = selectedData.audio;
+  image.src = selectedData.image;
 };
 
 const launchTimer = (time) => {
@@ -211,7 +212,6 @@ const launchTimer = (time) => {
 
     if (minutes === 0 && seconds === 1) {
         endSound.play();
-        image.src = selectedData.image;
         imageDialog.showModal();
     }else if (minutes === 0 && seconds <= 6) {
       timer.classList.remove("blinking-text-1");
