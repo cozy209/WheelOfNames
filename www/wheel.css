@@ -314,3 +314,17 @@ body {
   top: 0.5em;
   right: 0.5em;
 }
+img { 
+  display: block; 
+  margin: 20px auto;
+  cursor: pointer;
+  
+  &:hover {
+    animation: vibrate 0.1s infinite;
+  }
+}
+
+@keyframes vibrate {
+  50% { transform: rotate(5deg) translateX(5px); }
+  100% { transform: rotate(-5deg) translateX(-5px); }
+}
