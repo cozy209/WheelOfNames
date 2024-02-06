@@ -65,7 +65,7 @@ let configTime;
 let timerId = null;
 let maxTimePerPersonString = "2:00";
 let countdown = new Audio("sounds/timer/countdown.mp3");
-let endSound = new Audio("sounds/end/spongebob.mp3");
+let endSound = new Audio("sounds/end/alarm.mp3");
 
 
 // FUNCTIONS
