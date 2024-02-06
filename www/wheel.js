@@ -1,30 +1,30 @@
 // CONFIG
 
 const names = [
-  {name: "Lucie",checked: true},
-  {name: "Nancy",checked: true},
   {name: "Eric",checked: true},
-  {name: "Charles ",checked: true},
-  {name: "Marco",checked: true},
-  {name: "Daniel",checked: true},
-  {name: "Florian",checked: false},
+  {name: "Oumaima",checked: true},
+  {name: "Clement",checked: true},
+  {name: "Naores",checked: true},
+  {name: "Virginie",checked: true},
+  {name: "Jeremy",checked: true},
+  {name: "Guillaume",checked: true},
+  {name: "Yassine",checked: true},
+  {name: "Marie",checked: true},
+  {name: "Matthieu",checked: true},
+  {name: "Cathy",checked: false},
 ];
 const colors = [
-  "hsl(348 100% 60%)",
-  "hsl(349 98% 67%)",
-  "hsl(12 100% 61%)",
-  "hsl(20 100% 70%)",
-  "hsl(30 100% 60%)",
-  "hsl(45 100% 60%)",
-  "hsl(60 100% 70%)",
-  "hsl(72 100% 50%)",
-  "hsl(120 100% 70%)",
-  "hsl(153 70% 80%)",
-  "hsl(178 81% 45%)",
-  "hsl(196 75% 61%)",
-  "hsl(291 64% 42%)",
-  "hsl(309 85% 57%)",
-  "hsl(312 100% 50%)"
+  "hsl(359 94% 62%)",
+  "hsl(21 89% 56%)",
+  "hsl(33 94% 55%)",
+  "hsl(20 94% 63%)",
+  "hsl(31 94% 64%)",
+  "hsl(42 93% 64%)",
+  "hsl(94 38% 59%)",
+  "hsl(162 43% 46%)",
+  "hsl(178 30% 43%)",
+  "hsl(208 25% 45%)",
+  "hsl(198 61% 39%)"
 ];
 
 // VARIABLE DEFINITION
