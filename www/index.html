@@ -28,34 +28,46 @@
       <center>
         <h1>Configuration</h1>
       </center>
+      <button id="reset-conf-button" class="fa fa-xmark icon-button top-right"></button>
       <div class="flex-row">
         <div class="flex-col">
           <form id="dialog-content" class="content"></form>
         </div>
         <div class="flex-col mr-1 ml-2">
-          
-          <input type="radio" id="time-per-pers" name="time" class="radio-button" checked/>
+          <input
+            type="radio"
+            id="time-per-pers"
+            name="time"
+            class="radio-button"
+            checked
+          />
           <label>Time per pers :</label>
           <label class="mb-1">
-          <input type="text" class="time-input" id="min-per-pers"/> min
+            <input type="text" class="time-input" id="min-per-pers" /> min
           </label>
-          
-          <input type="radio" id="end-time" name="time" class="radio-button"  />
+
+          <input type="radio" id="end-time" name="time" class="radio-button" />
           <label>Total time :</label>
           <label class="mb-2">
-          <input type="text" class="time-input" id="minutes-total"/> min
+            <input type="text" class="time-input" id="minutes-total" /> min
           </label>
           <button id="reset-time-button" class="icon-button">
-            <span class="fa fa-clock-rotate-left" ></span><br/>
+            <span class="fa fa-clock-rotate-left"></span><br />
             Reset timer
           </button>
         </div>
       </div>
       <center>
-        <button class="black-button" id="close-dialog-button">
-          Save config
-        </button>
+          <button class="black-button" id="close-dialog-button">
+            Save config
+          </button>
       </center>
+    </dialog>
+    <dialog id="image-dialog">
+      <img
+        src="images/spongebob.jpg"
+        id="image"
+      />
     </dialog>
     <script src="wheel.js"></script>
   </body>
