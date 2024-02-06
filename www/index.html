@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wheel of Names</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="wheel.css" />
+  </head>
+  <body>
+    <button id="open-dialog-button" class="fa fa-gear icon-button"></button>
+
+    <div class="deal-wheel">
+      <ul class="spinner"></ul>
+      <div class="ticker"></div>
+      <button class="btn-spin">Spin the wheel</button>
+    </div>
+
+    <div class="flex-col">
+      <h1 class="name">Spin the wheel</h1>
+      <h1 class="timer">2:00</h1>
+    </div>
+
+    <dialog id="dialog">
+      <center>
+        <h1>Configuration</h1>
+      </center>
+      <div class="flex-row">
+        <div class="flex-col">
+          <form id="dialog-content" class="content"></form>
+        </div>
+        <div class="flex-col mr-1 ml-2">
+          
+          <input type="radio" id="time-per-pers" name="time" class="radio-button" checked/>
+          <label>Time per pers :</label>
+          <label class="mb-1">
+          <input type="text" class="time-input" id="min-per-pers"/> min
+          </label>
+          
+          <input type="radio" id="end-time" name="time" class="radio-button"  />
+          <label>Total time :</label>
+          <label class="mb-2">
+          <input type="text" class="time-input" id="minutes-total"/> min
+          </label>
+          <button id="reset-time-button" class="icon-button">
+            <span class="fa fa-clock-rotate-left" ></span><br/>
+            Reset timer
+          </button>
+        </div>
+      </div>
+      <center>
+        <button class="black-button" id="close-dialog-button">
+          Save config
+        </button>
+      </center>
+    </dialog>
+    <script src="wheel.js"></script>
+  </body>
+</html>
