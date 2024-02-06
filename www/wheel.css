@@ -309,6 +309,9 @@ body {
   background-color: transparent;
   border: none;
 }
+#image{
+  height: 80vh;
+}
 .top-right{
   position: absolute;
   top: 0.5em;
