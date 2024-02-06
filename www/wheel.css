@@ -48,7 +48,7 @@ body {
 }
 
 .deal-wheel {
-  --size: clamp(250px, 70vmin, 500px);
+  --size: clamp(250px, 80vmin, 500px);
   --lg-hs: 0 3%;
   --lg-stop: 50%;
   --lg: linear-gradient(
@@ -242,7 +242,6 @@ body {
   }
 }
 #open-dialog-button{
-
   position: fixed;
   top: 1em;
   right: 1em;
@@ -305,4 +304,13 @@ body {
 }
 .blinking-text-05 {
   animation: blink 0.5s infinite;
+}
+#image-dialog{
+  background-color: transparent;
+  border: none;
+}
+.top-right{
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
 }
