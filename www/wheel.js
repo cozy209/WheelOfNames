@@ -26,6 +26,16 @@ const colors = [
   "hsl(208 25% 45%)",
   "hsl(198 61% 39%)"
 ];
+const endAudiosAndGif = [
+  {name: "Eric", audio: new Audio("sounds/end/alarm.mp3"),image: "images/eric.png"},
+  {name: "Guillaume", audio: new Audio("sounds/end/alarm.mp3"),image: "images/guillaume.png"},
+  {name: "Jeremy", audio: new Audio("sounds/end/alarm.mp3"),image: "images/jeremy.png"},
+  {name: "Marie", audio: new Audio("sounds/end/alarm.mp3"),image: "images/marie.png"},
+  {name: "Matthieu", audio: new Audio("sounds/end/alarm.mp3"),image: "images/matthieu.png"},
+  {name: "Naores", audio: new Audio("sounds/end/alarm.mp3"),image: "images/naores.png"},
+  {name: "Virginie", audio: new Audio("sounds/end/josh.mp3"),image: "images/virginie.gif"},
+  {name: "Yassine", audio: new Audio("sounds/end/alarm.mp3"),image: "images/yassine.png"}
+];
 
 // VARIABLE DEFINITION
 
@@ -65,7 +75,7 @@ let configTime;
 let timerId = null;
 let maxTimePerPersonString = "2:00";
 let countdown = new Audio("sounds/timer/countdown.mp3");
-let endSound = new Audio("sounds/end/alarm.mp3");
+let endSound;
 
 
 // FUNCTIONS
@@ -87,11 +97,14 @@ const shuffle = (array) => {
 const createData = () => {
   let shuffleNames = shuffle(names);
   let shuffleColors = shuffle(colors);
+  let shuffleAudio = shuffle(endAudiosAndGif);
   shuffleNames.forEach((curName, i) => {
     defaultData.push({
       name: curName.name,
       checked:curName.checked,
-      color: shuffleColors[i]
+      color: shuffleColors[i],
+      audio: shuffleAudio[i%shuffleAudio.length].audio,
+      image: shuffleAudio[i%shuffleAudio.length].image
     });
   });
   saveNamesConfiguration();
@@ -184,6 +197,7 @@ const selectPrize = () => {
   winner.textContent = data[selected].name;
   winner.style.color = data[selected].color;
   selectedData = data[selected];
+  endSound = selectedData.audio;
 };
 
 const launchTimer = (time) => {
@@ -196,8 +210,9 @@ const launchTimer = (time) => {
     let seconds = parseInt(time[1]);
 
     if (minutes === 0 && seconds === 1) {
-      endSound.play();
-       imageDialog.showModal();
+        endSound.play();
+        image.src = selectedData.image;
+        imageDialog.showModal();
     }else if (minutes === 0 && seconds <= 6) {
       timer.classList.remove("blinking-text-1");
       timer.classList.add("blinking-text-05");
