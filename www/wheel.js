@@ -1,50 +1,55 @@
 // CONFIG
 
 const names = [
-  "Eric",
-  "Oumaima",
-  "Clement",
-  "Naores",
-  "Virginie",
-  "Jeremy",
-  "Guillaume",
-  "Yassine",
-  "Marie",
-  "Matthieu",
+  {name: "Lucie",checked: true},
+  {name: "Nancy",checked: true},
+  {name: "Eric",checked: true},
+  {name: "Charles ",checked: true},
+  {name: "Marco",checked: true},
+  {name: "Daniel",checked: true},
+  {name: "Florian",checked: false},
 ];
 const colors = [
-  "hsl(359 94% 62%)",
-  "hsl(21 89% 56%)",
-  "hsl(33 94% 55%)",
-  "hsl(20 94% 63%)",
-  "hsl(42 93% 64%)",
-  "hsl(94 38% 59%)",
-  "hsl(162 43% 46%)",
-  "hsl(178 30% 43%)",
-  "hsl(208 25% 45%)",
-  "hsl(198 61% 39%)",
+  "hsl(348 100% 60%)",
+  "hsl(349 98% 67%)",
+  "hsl(12 100% 61%)",
+  "hsl(20 100% 70%)",
+  "hsl(30 100% 60%)",
+  "hsl(45 100% 60%)",
+  "hsl(60 100% 70%)",
+  "hsl(72 100% 50%)",
+  "hsl(120 100% 70%)",
+  "hsl(153 70% 80%)",
+  "hsl(178 81% 45%)",
+  "hsl(196 75% 61%)",
+  "hsl(291 64% 42%)",
+  "hsl(309 85% 57%)",
+  "hsl(312 100% 50%)"
 ];
-
-const defaultEndTimeHour = 10;
-const defaultEndTimeMinute = 10;
 
 // VARIABLE DEFINITION
 
 let data = [];
+let defaultData = [];
 
 const conf = document.getElementById("dialog-content");
 const winner = document.querySelector(".name");
 const timer = document.querySelector(".timer");
-const mpp = document.getElementById("min-per-pers");
-const mtt = document.getElementById("minutes-total");
 const dialog = document.getElementById("dialog");
+const imageDialog = document.getElementById("image-dialog");
+const image = document.getElementById("image");
 const openButton = document.getElementById("open-dialog-button");
 const closeButton = document.getElementById("close-dialog-button");
+const resetConfButton = document.getElementById("reset-conf-button");
 const resetTimerButton = document.getElementById("reset-time-button");
 const wheel = document.querySelector(".deal-wheel");
 const spinner = wheel.querySelector(".spinner");
 const trigger = wheel.querySelector(".btn-spin");
 const ticker = wheel.querySelector(".ticker");
+const mpp = document.getElementById("min-per-pers");
+const radioPP = document.getElementById("time-per-pers");
+const mtt = document.getElementById("minutes-total");
+const radioTT = document.getElementById("end-time");
 const spinClass = "is-spinning";
 const selectedClass = "selected";
 const spinnerStyles = window.getComputedStyle(spinner);
@@ -53,43 +58,29 @@ let tickerAnim;
 let rotation = 0;
 let currentSlice = 0;
 let prizeNodes;
+let selectedData;
+let configSelectedNames = [];
+let configTimeType;
+let configTime;
 let timerId = null;
 let maxTimePerPersonString = "2:00";
+let countdown = new Audio("sounds/timer/countdown.mp3");
+let endSound = new Audio("sounds/end/spongebob.mp3");
+
 
 // FUNCTIONS
-
-const getCurrentTimerMax = () => {
-  var now = new Date();
-
-  var targetTime = new Date();
-  targetTime.setHours(10);
-  targetTime.setMinutes(10);
-  targetTime.setSeconds(0);
-
-  var timeDiff = targetTime.getTime() - now.getTime();
-
-  var dividedTimeDiff = timeDiff / 7;
-
-  return dividedTimeDiff;
-};
 
 const shuffle = (array) => {
   let currentIndex = array.length,
     randomIndex;
-
-  // While there remain elements to shuffle.
   while (currentIndex > 0) {
-    // Pick a remaining element.
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
-
-    // And swap it with the current element.
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex],
       array[currentIndex],
     ];
   }
-
   return array;
 };
 
@@ -97,31 +88,36 @@ const createData = () => {
   let shuffleNames = shuffle(names);
   let shuffleColors = shuffle(colors);
   shuffleNames.forEach((curName, i) => {
-    data.push({
-      name: curName,
-      color: shuffleColors[i],
+    defaultData.push({
+      name: curName.name,
+      checked:curName.checked,
+      color: shuffleColors[i]
     });
   });
+  saveNamesConfiguration();
 };
 
 const createConfig = () => {
-  data.sort((a, b) => a.name.localeCompare(b.name));
-  data.forEach(({ name, color }) => {
+  defaultData.sort((a, b) => a.name.localeCompare(b.name));
+  defaultData.forEach(({ name, checked, color }) => {
+    let checkedString = "";
+    if(checked){
+      checkedString = "checked";
+    }
     conf.insertAdjacentHTML(
       "beforeend",
       `
             <label>
-            <input type="checkbox" style="accent-color: ${color};" class="checkbox" id="${name}" checked />
+            <input type="checkbox" style="accent-color: ${color};" class="checkbox" id="${name}" ${checkedString}/>
             ${name}
             </label>
             <br/>`
     );
   });
-  shuffle(data);
 };
 
 const createPrizeNodes = () => {
-  data.forEach(({ name, color }, i) => {
+  data.forEach(({ name }, i) => {
     const prizeOffset = Math.floor(180 / data.length);
     const rotation = (360 / data.length) * i * -1 - prizeOffset;
 
@@ -187,6 +183,7 @@ const selectPrize = () => {
   prizeNodes[selected].classList.add(selectedClass);
   winner.textContent = data[selected].name;
   winner.style.color = data[selected].color;
+  selectedData = data[selected];
 };
 
 const launchTimer = (time) => {
@@ -198,9 +195,14 @@ const launchTimer = (time) => {
     let minutes = parseInt(time[0]);
     let seconds = parseInt(time[1]);
 
-    if (minutes === 0 && seconds <= 6) {
+    if (minutes === 0 && seconds === 1) {
+      endSound.play();
+       imageDialog.showModal();
+    }else if (minutes === 0 && seconds <= 6) {
       timer.classList.remove("blinking-text-1");
       timer.classList.add("blinking-text-05");
+    } else if (minutes === 0 && seconds <= 12) {
+      countdown.play();
     } else if (minutes === 0 && seconds <= 11) {
       timer.classList.add("blinking-text-1");
     } else if (minutes === 0 && seconds <= 16) {
@@ -224,31 +226,56 @@ const launchTimer = (time) => {
   }, 1000);
 };
 
+const resetConfig = () => {
+  configSelectedNames.forEach(({name, checked}) => {
+    let nameElement = document.getElementById(name);
+    nameElement.checked = checked;
+  });
+  if (configTimeType === "radioPP") {
+    radioPP.checked = true;
+    mpp.value = configTime;
+  } else if (configTimeType === "radioTT") {
+    radioTT.checked = true;
+    mtt.value = configTime;
+  }
+}
+
+const savePreviousConfig = () => {
+  names.forEach(({name, checked}) => {
+    let nameChecked = checked;
+    if(document.getElementById(name)){
+      nameChecked = document.getElementById(name).checked;
+    }
+    configSelectedNames.push({name: name, checked: nameChecked});
+  });
+  if (radioPP.checked) {
+    configTimeType = "radioPP";
+    configTime = mpp.value;
+  } else if (radioTT.checked) {
+    configTimeType = "radioTT";
+    configTime = mtt.value;
+  }
+}
+
 const saveNamesConfiguration = () => {
-  const length = data.length;
-  names.forEach((name) => {
-    const nameChecked = document.getElementById(name).checked;
-    let idx = data.findIndex((dat) => dat.name === name);
-    if (idx !== -1 && !nameChecked) {
-      console.log(`removing ${name} at position ${idx}`);
-      data.splice(idx, 1);
+  data = [];
+  names.forEach(({name,checked}) => {
+    let nameChecked = checked;
+    if(document.getElementById(name)){
+      nameChecked = document.getElementById(name).checked;
+    }
+    if(nameChecked){
+      data.push(defaultData.find((el) => el.name === name));
     }
   });
 
-  if (data.length !== length) {
-    spinner.innerHTML = "";
-    spinner.style = "";
-    setupWheel();
-  }
+  spinner.innerHTML = "";
+  spinner.style = "";
+  setupWheel();
+  
 };
 
-const saveTimeConfiguration = () => {
-  const mpp = document.getElementById("min-per-pers");
-  const radioPP = document.getElementById("time-per-pers");
-  const mtt = document.getElementById("minutes-total");
-  const radioTT = document.getElementById("end-time");
-
-  if (radioPP.checked) {
+const saveTimeConfiguration = () => {if (radioPP.checked) {
     maxTimePerPersonString = convertMinutesToMinutesAndSeconds(mpp.value);
   } else if (radioTT.checked) {
     maxTimePerPersonString = convertMinutesToMinutesAndSeconds(
@@ -283,7 +310,7 @@ trigger.addEventListener("click", () => {
     wheelAlradySpinned = true;
   } else if (data.length > 1){
     const selected = Math.floor(rotation / (360 / data.length));
-    console.log(`removing ${data[selected].name} at position ${selected}`);
+    console.log(`removing ${data[selected].name}`);
     data.splice(selected, 1);
     spinner.innerHTML = "";
     spinner.style = "";
@@ -320,7 +347,15 @@ spinner.addEventListener("transitionend", () => {
 
 createData();
 createConfig();
-setupWheel();
+
+resetConfButton.addEventListener("click", function () {
+  resetConfig();
+  dialog.close();
+});
+
+ imageDialog.addEventListener("click", function () {
+   imageDialog.close();
+});
 
 openButton.addEventListener("click", function () {
   dialog.showModal();
@@ -330,6 +365,7 @@ openButton.addEventListener("click", function () {
   if (!mtt.value) {
     mtt.value = 20;
   }
+  savePreviousConfig();
 });
 
 closeButton.addEventListener("click", function () {
